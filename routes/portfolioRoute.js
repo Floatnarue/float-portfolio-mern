@@ -1,5 +1,5 @@
 const router = require('express').Router();
-
+const User = require('../models/userModel');
 const { Intro, About, Project, Course, Experience, Contact } = require('../models/portfolioModel');
 // Get all portfolio data //
 router.get('/get-portfolio-data', async (req, res) => {
@@ -30,6 +30,29 @@ router.get('/get-portfolio-data', async (req, res) => {
 });
 
 
+
+
+//Admin login
+
+
+router.post("/admin-login" , async (req,res) => {
+    try {   
+        const user = await User.findOne({username : req.body.username  , password : req.body.password });
+        if (user) {
+            res.status(200).send({
+                data : user ,
+                success : true,
+                message : "Login succesful"
+            });
+            
+            
+        } else {
+            res.status(500).send(error)
+        }
+    }catch(error){
+        res.status(500).send(error) ;
+    }
+})
 //update intro
 
 router.post("/update-intro", async (req, res) => {
@@ -269,6 +292,8 @@ router.post("/update-contact", async (req, res) => {
         res.status(500).send(error);
     }
 });
+
+
 
 
 
